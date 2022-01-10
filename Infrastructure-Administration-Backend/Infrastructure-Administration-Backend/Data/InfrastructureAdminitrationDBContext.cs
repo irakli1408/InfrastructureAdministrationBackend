@@ -1,4 +1,5 @@
 ﻿using Infrastructure_Administration_Backend.DataModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure_Administration_Backend.Data
 {
-    public class InfrastructureAdminitrationDBContext : IdentityDbContext
+    public class InfrastructureAdminitrationDBContext : IdentityDbContext<ApplicationUser>
     {
         public InfrastructureAdminitrationDBContext(DbContextOptions<InfrastructureAdminitrationDBContext> options):base(options){}
-        public DbSet<Status> status { get; set; }
-        public DbSet<User> user { get; set; }
+        public DbSet<Status> Statuses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-            .HasOne(x => x.statuses).WithMany(x => x.user).HasForeignKey(x=>x.StatusId);
-            
-            
+            modelBuilder.Entity<ApplicationUser>()
+            .HasOne(x => x.Statuses)
+            .WithMany(x => x.User)
+            .HasForeignKey(x=>x.StatusId);
             base.OnModelCreating(modelBuilder);
         }
     }
