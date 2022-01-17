@@ -29,6 +29,8 @@ namespace Infrastructure_Administration_Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel roleModel)
         {
+            throw new Exception("jibidan visvri");
+
             if (ModelState.IsValid)
             {
                 var result = await repository.CreateRole(roleModel);
