@@ -18,7 +18,7 @@ namespace Infrastructure_Administration_Backend.Repository
         List<UserKeyValue> GetUsers();
         Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel auth);
         Task<IdentityResult> CreateRole(CreateRoleModel roleModel);
-        Task<IdentityResult> Register(RegisterKeyValue auth);
+        Task<string> Register(RegisterKeyValue auth);
 
     }
 }

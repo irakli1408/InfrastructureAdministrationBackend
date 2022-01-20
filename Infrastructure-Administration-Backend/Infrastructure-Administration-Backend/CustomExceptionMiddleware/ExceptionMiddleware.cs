@@ -26,7 +26,7 @@ namespace Infrastructure_Administration_Backend.CustomExceptionMiddleware
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Reise Reise, Seeman Reise");
+                _logger.LogError(ex.Message);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

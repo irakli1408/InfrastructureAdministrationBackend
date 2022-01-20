@@ -70,28 +70,32 @@ namespace Infrastructure_Administration_Backend.Repository
             return await roleManager.CreateAsync(identityRole);
         }
 
-        public async Task<IdentityResult> Register(RegisterKeyValue auth)
+        public async Task<string> Register(RegisterKeyValue model)
         {
+            var userEmail = await userManager.FindByEmailAsync(model.Email);
+            if (userEmail != null)
+            {
+                return "this email is already taken";
+            }
+            //var roleQuery = context.Roles.Where(x => model.Role.Contains(x.Id));
+            var OneTimePassword = service.GenerateRandomPassword();
+            //SendEmail(OneTimePassword, auth);
             var newUser = new ApplicationUser
             {
-                UserName = auth.Name,
-                Surname = auth.Surname,
-                Possition = auth.Possition,
-                Email = auth.Email,
-                StatusId = auth.Status,
+                UserName = model.Name,
+                Surname = model.Surname,
+                Possition = model.Possition,
+                Email = model.Email,
+                StatusId = model.Status,
+                CreateDate = DateTime.Now
             };
-            var OneTimePassword = service.GenerateRandomPassword();
-            Console.WriteLine(OneTimePassword);
-            //service.SendEmail(OneTimePassword, auth);
-            var result = await userManager.CreateAsync(newUser, OneTimePassword);
-            if (result.Succeeded)
-            {
-                return await userManager.AddToRoleAsync(newUser, auth.Role);
-            }
-            else
-            {
-                return result;
-            }
+
+            // gasaketebelia ro shemovides RoleId
+            await userManager.CreateAsync(newUser, OneTimePassword);
+
+            //await userManager.AddToRoleAsync(newUser, model.Role);
+
+            return "Success";
         }
 
         public List<UserKeyValue> GetUsers()
@@ -110,6 +114,8 @@ namespace Infrastructure_Administration_Backend.Repository
                        }).ToList();
             return item;
         }
+
+
         
     }
 }

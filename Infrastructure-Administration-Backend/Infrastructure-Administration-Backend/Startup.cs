@@ -27,8 +27,14 @@ namespace Infrastructure_Administration_Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRepository, InfrastructureRepository>();
+
             services.AddScoped<IService, InfrastructureService>();
-            services.AddDbContext<InfrastructureAdminitrationDBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IFilterRepository, FilterRepository>();
+
+            services.AddDbContext<InfrastructureAdminitrationDBContext>(option =>
+               option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {
                 opts.Password.RequireDigit = true;
@@ -38,18 +44,16 @@ namespace Infrastructure_Administration_Backend
                 opts.Password.RequiredLength = 6;
             })
              .AddRoles<IdentityRole>()
+
              .AddEntityFrameworkStores<InfrastructureAdminitrationDBContext>();
             services.AddHealthChecks();
             services.AddAuthentication();
             services.AddAuthorization();
             services.AddMvc();
-            //services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "InfrastructureAdministration",
-                    Version = "v1" });
-            });
+            services.AddControllers();
+
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,9 +62,10 @@ namespace Infrastructure_Administration_Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>c.SwaggerEndpoint("/swagger/v1/swagger.json", "InfrastructureAdministration v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.ConfigureCustomExceptionMiddleware();
 

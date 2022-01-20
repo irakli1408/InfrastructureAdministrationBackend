@@ -1,4 +1,5 @@
-﻿using Infrastructure_Administration_Backend.DataModels;
+﻿using Infrastructure_Administration_Backend.Data;
+using Infrastructure_Administration_Backend.DataModels;
 using Infrastructure_Administration_Backend.DataModels.AddNewRole;
 using Infrastructure_Administration_Backend.DataModels.ChangePassword;
 using Infrastructure_Administration_Backend.DataModels.Register;
@@ -15,21 +16,36 @@ namespace Infrastructure_Administration_Backend.Controllers
     {
         private readonly IRepository repository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly InfrastructureAdminitrationDBContext context;
+        private readonly IFilterRepository filt;
 
         public SAdminController(
             IRepository repository,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            InfrastructureAdminitrationDBContext context,
+           IFilterRepository filt
             )
         {
+            this.filt = filt;
+            this.context = context;
             this.repository = repository;
             this.userManager = userManager;
+        }
+
+
+
+        public IActionResult FilterMethod([FromBody] FilterModel model)
+        {
+            var res = new PagingForFrontService(filt);
+
+            return Ok(res.FilterPagingMethod(model));
         }
 
         #region createRole
         [HttpPost]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel roleModel)
         {
-            throw new Exception("jibidan visvri");
+            
 
             if (ModelState.IsValid)
             {
@@ -70,15 +86,30 @@ namespace Infrastructure_Administration_Backend.Controllers
             if (ModelState.IsValid)
             {
                 var userEmail = await userManager.FindByEmailAsync(auth.Email);
+
                 if (userEmail != null)
                 {
                     throw new Exception("UserName does not exist");
                 }
-                var result = await repository.Register(auth);
-                if (!result.Succeeded)
+               
+                //var roleQuery = context.Roles.Where(x => model.Role.Contains(x.Id));
+                var OneTimePassword = "Mawoni123";
+                //SendEmail(OneTimePassword, auth);
+                var newUser = new ApplicationUser
                 {
-                    throw new Exception("Registration Failed");
-                }
+                    UserName = auth.Name,
+                    Surname = auth.Surname,
+                    Possition = auth.Possition,
+                    Email = auth.Email,
+                    StatusId = auth.Status,
+                    CreateDate = DateTime.Now
+                };
+
+                // gasaketebelia ro shemovides RoleId
+                await userManager.CreateAsync(newUser, OneTimePassword);
+
+                //await userManager.AddToRoleAsync(newUser, model.Role);
+
                 return Ok(new { success = true });
             }
             throw new Exception("ModelState Invalid");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure_Administration_Backend.DataModels
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string Surname { get; set; }
         public string Possition { get; set; }
