@@ -1,3 +1,4 @@
+using Infrastructure_Administration_Backend.CustomExceptionMiddleware;
 using Infrastructure_Administration_Backend.Data;
 using Infrastructure_Administration_Backend.DataModels;
 using Infrastructure_Administration_Backend.Repository;
@@ -67,6 +68,8 @@ namespace InfrastructureAdministration
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "InfrastructureAdministration v1"));
             }
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
 

@@ -8,6 +8,7 @@ using Infrastructure_Administration_Backend.Services;
 using InfrastructureAdministration.DataModels.GetUsers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,12 +21,15 @@ namespace Infrastructure_Administration_Backend.Controllers
     {
         private readonly IService service;
         private readonly IFilterRepository filter;
+        private readonly ILogger<AdminController> logger;
 
         public AdminController(
             IService service,
-            IFilterRepository filter
+            IFilterRepository filter,
+            ILogger<AdminController> logger
             )
         {
+            this.logger = logger;
             this.service = service;
             this.filter = filter;
         }
@@ -33,7 +37,7 @@ namespace Infrastructure_Administration_Backend.Controllers
         [HttpGet]
         public IActionResult FilterMethod([FromBody] FilterModel model)
         {
-            throw new Exception("visvri jibidan");
+            logger.LogError("sdfjhaskdfhalsdf");
             var res = new PagingForFrontService(filter);
             return Ok(res.FilterPagingMethod(model));
         }
