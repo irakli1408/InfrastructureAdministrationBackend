@@ -82,13 +82,13 @@
               "target": "Package",
               "version": "[4.9.1, )"
             },
-            "PagedList": {
+            "PagedList.Core": {
               "target": "Package",
-              "version": "[1.17.0, )"
+              "version": "[1.17.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.1.4, )"
+              "version": "[5.0.0, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",

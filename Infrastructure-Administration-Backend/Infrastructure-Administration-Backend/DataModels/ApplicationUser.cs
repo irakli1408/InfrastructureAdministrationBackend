@@ -8,6 +8,7 @@ namespace Infrastructure_Administration_Backend.DataModels
 {
     public class ApplicationUser : IdentityUser
     {
+        //shesacvlelia lastname-ze
         public string Surname { get; set; }
         public string Possition { get; set; }
         public int StatusId { get; set; }

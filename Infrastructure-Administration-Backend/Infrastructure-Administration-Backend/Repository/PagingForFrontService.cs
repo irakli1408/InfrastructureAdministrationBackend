@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Infrastructure_Administration_Backend.Repository;
 using System.Threading.Tasks;
-using PagedList;
+using PagedList.Core;
 
 namespace Infrastructure_Administration_Backend.Repository
 {
@@ -23,7 +23,7 @@ namespace Infrastructure_Administration_Backend.Repository
 
             int pageSize = 10;
 
-            var result = res.ToPagedList(pageNumber, pageSize);
+              var result = res.ToPagedList(pageNumber, pageSize);
 
 
             var exportModelForFront = new ExportPagingModelForFront()
@@ -33,10 +33,10 @@ namespace Infrastructure_Administration_Backend.Repository
                 PageCount = result.PageCount,
                 Page = result.PageNumber,
 
-               Items = result
+                Items = result
             };
 
-            return exportModelForFront;
+             return exportModelForFront;
         }
 
     }

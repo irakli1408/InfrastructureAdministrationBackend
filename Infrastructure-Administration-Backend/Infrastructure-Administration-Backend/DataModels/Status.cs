@@ -10,7 +10,7 @@ namespace Infrastructure_Administration_Backend.DataModels
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public List<ApplicationUser> User { get; set; }
     }
 }

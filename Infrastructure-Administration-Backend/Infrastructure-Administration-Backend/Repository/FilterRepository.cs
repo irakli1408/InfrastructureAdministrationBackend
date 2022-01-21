@@ -17,17 +17,13 @@ namespace Infrastructure_Administration_Backend.Repository
 
         public IQueryable<Ex> FilterMethod(FilterModel model)
         {
-
             var users = from u in context.Users
                         where u.StatusId == 1 //&& u.DeleteDate == null
                         select u;
 
-            users = method(model, users);
-
+            users = Method(model, users);
 
             var res = users.ToList();
-
-
 
             var result = users.Select(x => new Ex
             {
@@ -38,11 +34,10 @@ namespace Infrastructure_Administration_Backend.Repository
 
             });
 
-
             return result;
         }
 
-        public IQueryable<ApplicationUser> method(FilterModel model, IQueryable<ApplicationUser> users)
+        public IQueryable<ApplicationUser> Method(FilterModel model, IQueryable<ApplicationUser> users)
         {
 
             users = users.Where(x =>
